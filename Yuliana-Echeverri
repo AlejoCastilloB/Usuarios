@@ -1,1 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plan Nutricional · Yuliana Echeverri · Alejo Castillo Coach</title>
+<meta name="description" content="Plan nutricional personalizado por Alejo Castillo Coach"/>
+<meta property="og:title" content="Plan Nutricional · Yuliana Echeverri"/>
+<meta property="og:description" content="Tu guía de comidas personalizada — Alejo Castillo Coach"/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #FAF8F5; font-family: 'DM Sans', 'Segoe UI', sans-serif; color: #2C2420; }
+  button { font-family: 'DM Sans', sans-serif; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: #F2EDE6; } ::-webkit-scrollbar-thumb { background: #C4A882; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
 
+const T = {
+  bg:"#FAF8F5",surface:"#FFFFFF",warm:"#F2EDE6",border:"#E8E1D9",
+  rose:"#D4788A",roseSoft:"#F5E6E9",sage:"#7A9E87",sageSoft:"#E6F0E9",
+  sand:"#C4A882",sandSoft:"#F5EFE6",ink:"#2C2420",muted:"#9C8E85",light:"#BFB5AD",
+};
+
+const meals = [
+  {
+    id:"desayuno",label:"Desayuno",time:"7–9 AM",icon:"☀️",
+    color:T.rose,colorSoft:T.roseSoft,kcalRange:"350–420 kcal",
+    options:[
+      {name:"Yogur griego + granola + fruta",kcal:370,macro:{p:18,c:48,g:9},prep:"2 min",
+       ingredients:["1 yogur griego natural ligero (125 g)","Granola sin azúcar añadido (30 g)","Mix de frutas frescas — fresas, kiwi o plátano (80 g)","Miel opcional (5 g)"],
+       instructions:["Saca el yogur de la nevera y viértelo en un bol amplio.","Distribuye la granola encima formando una capa uniforme.","Añade las frutas limpias y troceadas sobre la granola.","Termina con un hilo fino de miel si lo deseas."],
+       tip:"Trocea la fruta la noche anterior y guárdala en un tupper. Por la mañana solo montas el bowl."},
+      {name:"Tostadas con huevo revuelto",kcal:400,macro:{p:22,c:38,g:14},prep:"8 min",
+       ingredients:["2 rebanadas pan integral","2 huevos enteros","Tomate cherry (60 g)","AOVE en spray · sal · pimienta"],
+       instructions:["Tuesta el pan en tostadora 2–3 min.","Casca los huevos en un bol, añade sal y pimienta y bate con tenedor.","Calienta sartén antiadherente a fuego medio-bajo con spray de AOVE.","Añade los huevos y remueve con espátula haciendo movimientos lentos hasta que cuajen cremosos — no secos.","Sirve sobre las tostadas y acompaña con los tomates cherry partidos a la mitad."],
+       tip:"Huevos al micro: 90 seg en un bol con spray, remueve a mitad. Igual de buenos, cero friegue."},
+      {name:"Corn flakes + leche + fruta",kcal:355,macro:{p:12,c:60,g:6},prep:"2 min",
+       ingredients:["Corn flakes sin azúcar (50 g)","Leche semidesnatada (200 ml)","Mix de frutas troceadas (80 g)","Canela molida (opcional)"],
+       instructions:["Vierte los corn flakes en un bol.","Añade la leche fría directamente.","Distribuye las frutas troceadas encima.","Espolvorea canela si lo deseas."],
+       tip:"El más rápido de todos. Perfecto los días que vas con el tiempo justo."},
+      {name:"Tortilla francesa + fruta",kcal:390,macro:{p:20,c:30,g:16},prep:"6 min",
+       ingredients:["2 huevos enteros + 1 clara","Sal y orégano al gusto","AOVE en spray","Fruta de temporada (100 g)"],
+       instructions:["Bate los huevos con sal y orégano en un bol hasta que espumen.","Calienta sartén antiadherente a fuego medio con spray de AOVE.","Vierte la mezcla y deja cocer 1 min sin tocar.","Cuando los bordes estén firmes y el centro semi-cuajado, dobla a la mitad con espátula.","Cocina 30 seg más y sirve. Acompaña con la fruta al lado."],
+       tip:"Para que quede jugosa por dentro, retírala antes de que esté del todo cuajada — el calor residual termina el trabajo."},
+      {name:"Batido proteico rápido",kcal:360,macro:{p:28,c:38,g:8},prep:"3 min",
+       ingredients:["1 scoop proteína en polvo, vainilla o neutro (≈30 g)","200 ml leche semidesnatada o bebida de avena","1 plátano pequeño","Hielo al gusto"],
+       instructions:["Mete todos los ingredientes en la batidora.","Tritura 30–45 seg hasta textura homogénea.","Prueba y ajusta con más leche si queda muy espeso.","Sirve inmediatamente en vaso alto con hielo."],
+       tip:"Sin batidora: agita el polvo con la leche en un shaker y añade el plátano chafado con tenedor."},
+      {name:"Granola bowl con cacahuetes",kcal:415,macro:{p:16,c:50,g:14},prep:"3 min",
+       ingredients:["Yogur griego ligero (125 g)","Granola sin azúcar (35 g)","Cacahuetes naturales sin sal (15 g)","Miel (5 g) · canela"],
+       instructions:["Extiende el yogur en la base del bol como una crema.","Añade la granola en un lado del bol.","Distribuye los cacahuetes en el otro lado.","Drizzle de miel por encima y espolvorea canela."],
+       tip:"Más saciante que las otras opciones por la grasa del cacahuete. Ideal si no almuerzas hasta tarde."},
+    ]
+  },
+  {
+    id:"almuerzo",label:"Almuerzo",time:"13–14:30 h",icon:"🍽️",
+    color:T.sage,colorSoft:T.sageSoft,kcalRange:"500–580 kcal",
+    options:[
+      {name:"Arroz + pollo + verduras salteadas",kcal:540,macro:{p:38,c:58,g:10},prep:"15 min",
+       ingredients:["Pechuga de pollo (130 g)","Arroz blanco cocido (150 g)","Pimientos rojo y verde (80 g)","Zanahoria (50 g) · AOVE · ajo · pimentón · sal"],
+       instructions:["Corta el pollo en tiras. Sazona con sal, ajo en polvo y pimentón.","Calienta sartén con 1 cda de AOVE a fuego alto.","Sella el pollo 3 min por cada lado hasta dorado. Reserva.","En la misma sartén, saltea pimientos y zanahoria en juliana 4–5 min.","Sirve el arroz de base, las verduras encima y el pollo laminado coronando el plato."],
+       tip:"Con pollo y arroz del meal prep del domingo, esto se convierte en 3 minutos de emplatado."},
+      {name:"Pasta con atún y tomate",kcal:510,macro:{p:32,c:62,g:10},prep:"12 min",
+       ingredients:["Pasta, preferiblemente penne (80 g en crudo)","1 lata atún al natural (80 g escurrido)","Tomate triturado (4 cdas)","AOVE · ajo · orégano · sal"],
+       instructions:["Cuece la pasta en agua con sal según el paquete (8–10 min).","Sofríe 1 diente de ajo picado en AOVE a fuego medio 1 min.","Añade el tomate, sal y orégano. Cocina 3 min.","Escurre la pasta y mézclala con la salsa.","Añade el atún escurrido y desmenuzado. Remueve suavemente y sirve."],
+       tip:"Cuece 250 g de pasta el domingo y conserva en nevera hasta 4 días. Recalienta con un chorrito de agua."},
+      {name:"Ensalada completa con huevo y atún",kcal:460,macro:{p:34,c:28,g:20},prep:"7 min",
+       ingredients:["Mix de lechugas (80 g)","Tomate cherry (60 g) · pepino (60 g)","1 lata atún al natural · 1 huevo duro","Aceitunas negras (10 g) · AOVE · limón · sal"],
+       instructions:["Lava y seca las lechugas. Ponlas en la base del bol.","Añade el tomate cherry partido a mitades y el pepino en rodajas.","Distribuye el atún escurrido y el huevo duro laminado encima.","Coloca las aceitunas.","Aliña con AOVE, zumo de limón y sal al gusto."],
+       tip:"Ten siempre huevos duros en la nevera (duran 5 días con cáscara). Esta ensalada se monta en 2 minutos."},
+      {name:"Patatas al micro + salmón a la plancha",kcal:555,macro:{p:36,c:48,g:16},prep:"10 min",
+       ingredients:["2 patatas medianas (200 g)","Filete de salmón (120 g)","Espinacas frescas (50 g)","AOVE · sal · eneldo · limón"],
+       instructions:["Pincha las patatas con tenedor por todos lados. Envuélvelas en papel húmedo y microondas 7–8 min a máxima potencia.","Sazona el salmón con sal, eneldo y zumo de limón.","Calienta sartén con spray a fuego alto. Cocina el salmón 3 min por el lado de la piel, 2 min del otro.","Parte las patatas a la mitad y aliña con AOVE y sal.","Sirve sobre una base de espinacas frescas con el salmón encima."],
+       tip:"El papel húmedo en el micro es clave para que las patatas no se resequen. Sin olor, sin lío."},
+      {name:"Wrap de pollo y queso",kcal:520,macro:{p:34,c:50,g:14},prep:"8 min",
+       ingredients:["1 tortilla de maíz grande","Pollo a la plancha desmenuzado (100 g)","Queso rallado 4 quesos (20 g)","Tomate · lechuga · yogur griego (1 cda como salsa)"],
+       instructions:["Calienta la tortilla en sartén seca 30 seg por cada lado.","Extiende el yogur griego como base en el centro.","Distribuye la lechuga, el tomate picado, el pollo y el queso.","Dobla los lados hacia dentro y enrolla firmemente desde abajo.","Parte a la mitad en diagonal y sirve."],
+       tip:"Con pollo del meal prep son literalmente 3 minutos. Envuélvelo en papel de aluminio para comerlo fuera de casa."},
+      {name:"Arroz con huevo frito y verduras",kcal:490,macro:{p:22,c:60,g:14},prep:"10 min",
+       ingredients:["Arroz blanco cocido (160 g)","2 huevos enteros","Pimientos mixtos (60 g) · maíz en lata (30 g)","Salsa de soja ligera · AOVE · sal"],
+       instructions:["Saltea los pimientos en cubos en sartén con AOVE a fuego alto 3–4 min.","Añade el maíz escurrido y saltea 1 min más.","Incorpora el arroz, remueve y añade la salsa de soja. Cocina 2 min.","En sartén pequeña aparte, fríe los huevos en AOVE hasta clara cuajada y yema líquida.","Sirve el arroz con verduras y coloca los huevos fritos encima."],
+       tip:"La mejor forma de reciclar arroz del día anterior. Económico, saciante y listo en 10 min."},
+    ]
+  },
+  {
+    id:"cena",label:"Cena",time:"20–21:30 h",icon:"🌙",
+    color:T.sand,colorSoft:T.sandSoft,kcalRange:"420–500 kcal",
+    options:[
+      {name:"Salmón al horno + patatas + ensalada",kcal:490,macro:{p:36,c:38,g:18},prep:"20 min",
+       ingredients:["Filete de salmón (130 g)","Patatas en rodajas (150 g)","Ensalada verde sencilla (60 g)","AOVE · limón · eneldo · sal"],
+       instructions:["Precalienta horno a 200°C.","Coloca las rodajas de patata en bandeja con AOVE y sal. Hornea 10 min.","Saca la bandeja y coloca el salmón encima de las patatas. Aliña con limón, eneldo y AOVE.","Hornea todo junto 12–14 min más hasta que el salmón esté opaco.","Prepara la ensalada con AOVE y limón mientras el horno trabaja."],
+       tip:"Todo en la misma bandeja: un solo friegue. La ensalada se monta en los 12 min de horno."},
+      {name:"Pasta ligera con nata y 4 quesos",kcal:480,macro:{p:24,c:55,g:16},prep:"12 min",
+       ingredients:["Pasta (75 g en crudo)","Nata para cocinar (2 cdas, 30 ml)","4 quesos rallado (20 g)","Sal · pimienta · nuez moscada"],
+       instructions:["Cuece la pasta en agua con sal según paquete.","En cazo pequeño, calienta la nata a fuego bajo 1 min.","Añade el queso y remueve hasta que se funda. Salpimenta y añade pizca de nuez moscada.","Escurre la pasta guardando 1 cda del agua de cocción.","Mezcla la pasta con la salsa. Si queda muy espesa, añade el agua reservada."],
+       tip:"La cena comfort perfecta. Pesa la pasta antes de cocer — 75 g en crudo son ≈180 g cocidos."},
+      {name:"Tortilla de claras + patatas + tomate",kcal:420,macro:{p:28,c:38,g:12},prep:"12 min",
+       ingredients:["4 claras de huevo + 1 huevo entero","Patata cocida en dados (100 g)","Tomate en rodajas (80 g)","Sal · pimentón · AOVE"],
+       instructions:["Mezcla las claras, el huevo, sal y pimentón en un bol.","Calienta sartén mediana con AOVE a fuego medio.","Añade los dados de patata cocida y dora 2 min.","Vierte la mezcla de huevo sobre las patatas y cuaja a fuego bajo 3–4 min.","Voltea con un plato, cocina el otro lado 2 min. Sirve con el tomate aliñado al lado."],
+       tip:"Alta proteína, baja grasa. La mejor opción para cerrar el día con algo ligero pero saciante."},
+      {name:"Pollo al limón + arroz + brócoli",kcal:470,macro:{p:38,c:44,g:10},prep:"15 min",
+       ingredients:["Pechuga de pollo (120 g)","Arroz cocido (120 g)","Brócoli congelado (100 g)","AOVE · zumo de limón · ajo · sal"],
+       instructions:["Marina el pollo con zumo de limón, ajo picado, AOVE y sal durante 5 min.","Calienta sartén a fuego alto y cocina el pollo 4 min por cada lado hasta dorado.","Pon el brócoli congelado en bol con 2 cdas de agua. Tapa con film y microondas 4 min.","Calienta el arroz con un chorrito de agua en el micro 1 min.","Sirve el arroz de base, brócoli al lado y el pollo en filetes encima con el jugo de la sartén."],
+       tip:"El brócoli congelado al micro es el mejor aliado de la cena rápida. Sin olor, sin manchas."},
+      {name:"Bowl de atún, arroz y aguacate",kcal:500,macro:{p:30,c:48,g:18},prep:"5 min",
+       ingredients:["Arroz cocido (130 g)","1 lata atún al natural (80 g)","½ aguacate (60 g)","Sésamo · salsa de soja ligera · limón"],
+       instructions:["Calienta el arroz con unas gotas de agua en el micro 1 min.","Escurre el atún y distribúyelo en un lado del bol sobre el arroz.","Lamina o chafa el aguacate y colócalo en el otro lado.","Aliña con salsa de soja y zumo de limón.","Termina con sésamo espolvoreado."],
+       tip:"Con arroz ya hecho son 5 minutos reales. El aguacate aporta la grasa necesaria sin nada añadido."},
+      {name:"Crema de verduras + huevo duro + pan",kcal:430,macro:{p:20,c:48,g:14},prep:"5 min",
+       ingredients:["Crema de verduras (250 ml, brick sin aditivos o casera)","1–2 huevos duros","1 rebanada pan integral (30 g)","AOVE en hilo · sal"],
+       instructions:["Calienta la crema en cazo a fuego medio o en el micro 3 min.","Lamina los huevos duros en rodajas.","Tuesta el pan ligeramente.","Vierte la crema caliente en bol hondo y coloca las rodajas de huevo flotando encima.","Termina con hilo de AOVE y sirve el pan al lado."],
+       tip:"La crema de brick sin aditivos es perfectamente válida. Ten siempre un par en la despensa para emergencias."},
+    ]
+  },
+  {
+    id:"snack",label:"Snack",time:"Cuando toque",icon:"⚡",
+    color:"#9B8EC4",colorSoft:"#F0EDFA",kcalRange:"150–200 kcal",
+    options:[
+      {name:"Yogur griego + miel",kcal:160,macro:{p:14,c:18,g:4},prep:"0 min",
+       ingredients:["1 yogur griego natural ligero (125 g)","Miel (8 g)"],
+       instructions:["Abre el yogur.","Añade la miel por encima.","Come."],
+       tip:"El snack proteico más fácil del planeta. Siempre ten yogures en la nevera."},
+      {name:"Galletas María + plátano",kcal:190,macro:{p:4,c:38,g:4},prep:"0 min",
+       ingredients:["4 galletas María dorada sin azúcar añadido","1 plátano pequeño"],
+       instructions:["Pela el plátano.","Come con las galletas."],
+       tip:"Carbos rápidos. Ideal antes de actividad física o como merienda de media tarde."},
+      {name:"Cacahuetes + gelatina",kcal:175,macro:{p:8,c:12,g:11},prep:"0 min",
+       ingredients:["Cacahuetes naturales sin sal (20 g)","1 gelatina sin azúcar"],
+       instructions:["Porciona los cacahuetes — ¡pésalos, 20 g se van volando!","Acompaña con la gelatina fría."],
+       tip:"Muy saciante por la grasa. Bueno para cortar el hambre sin pasarse de calorías."},
+      {name:"Mix de frutas + corn flakes",kcal:165,macro:{p:3,c:36,g:2},prep:"1 min",
+       ingredients:["Mix de frutas frescas (150 g)","Corn flakes sin azúcar (20 g)"],
+       instructions:["Trocea la fruta en bol.","Añade los corn flakes por encima para dar textura.","Come enseguida antes de que se ablanden."],
+       tip:"Ligero y refrescante. Ideal a media mañana."},
+      {name:"Claras cocidas + fruta",kcal:155,macro:{p:16,c:18,g:2},prep:"0 min",
+       ingredients:["3 claras de huevo cocidas, de brik o huevo (≈90 g)","Fruta de temporada (100 g)"],
+       instructions:["Si usas brik: vierte las claras en bol y microondas 2 min, remueve a mitad. Deja enfriar.","Trocea la fruta.","Come juntos."],
+       tip:"Alta proteína, casi sin calorías extras. El brik de claras lo facilita mucho."},
+      {name:"Batido ligero de proteína",kcal:180,macro:{p:22,c:16,g:3},prep:"2 min",
+       ingredients:["½ scoop proteína en polvo (≈15 g)","200 ml leche desnatada o agua","Hielo al gusto"],
+       instructions:["Mezcla en shaker o batidora.","Agita 20 seg.","Sirve con hielo."],
+       tip:"Solo usar si no llega a la proteína objetivo con comida real ese día."},
+    ]
+  },
+];
+
+const { useState } = React;
+
+function OptionCard({ option, color, colorSoft, index }) {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab]   = useState("ingredientes");
+  return (
+    <div style={{background:T.surface,border:`1.5px solid ${open?color+"66":T.border}`,borderRadius:16,overflow:"hidden",marginBottom:10,boxShadow:open?`0 4px 20px ${color}18`:"none",transition:"border-color 0.2s,box-shadow 0.2s"}}>
+      <div onClick={()=>setOpen(!open)} style={{padding:"14px 16px",cursor:"pointer",background:open?colorSoft:T.surface,display:"flex",justifyContent:"space-between",alignItems:"center",transition:"background 0.2s"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <span style={{width:26,height:26,borderRadius:"50%",background:color,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,flexShrink:0}}>{index+1}</span>
+          <span style={{fontFamily:"'Playfair Display',Georgia,serif",fontStyle:"italic",fontSize:15,color:T.ink,fontWeight:600}}>{option.name}</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <span style={{fontSize:12,color:T.muted,fontWeight:600}}>{option.kcal} kcal</span>
+          <span style={{fontSize:18,color,display:"inline-block",transform:open?"rotate(90deg)":"rotate(0deg)",transition:"transform 0.2s"}}>›</span>
+        </div>
+      </div>
+      {open && (
+        <div style={{padding:"0 16px 18px"}}>
+          <div style={{display:"flex",gap:6,flexWrap:"wrap",padding:"14px 0 12px"}}>
+            {[{l:"Proteína",v:option.macro.p,c:T.sage},{l:"Carbs",v:option.macro.c,c:T.rose},{l:"Grasas",v:option.macro.g,c:T.sand}].map(m=>(
+              <span key={m.l} style={{background:m.c+"22",border:`1px solid ${m.c}44`,borderRadius:20,padding:"3px 10px",fontSize:11,fontWeight:700,color:m.c}}>{m.l} {m.v}g</span>
+            ))}
+            <span style={{background:T.warm,borderRadius:20,padding:"3px 10px",fontSize:11,color:T.muted,fontWeight:600}}>⏱ {option.prep}</span>
+          </div>
+          <div style={{display:"flex",borderBottom:`1px solid ${T.border}`,marginBottom:14}}>
+            {["ingredientes","preparación"].map(t=>(
+              <button key={t} onClick={()=>setTab(t)} style={{background:"none",border:"none",padding:"7px 14px",fontSize:12,fontWeight:700,color:tab===t?color:T.muted,cursor:"pointer",borderBottom:tab===t?`2px solid ${color}`:"2px solid transparent",marginBottom:-1,textTransform:"capitalize",transition:"color 0.15s"}}>{t}</button>
+            ))}
+          </div>
+          {tab==="ingredientes" && (
+            <div>{option.ingredients.map((ing,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:7}}>
+                <span style={{width:6,height:6,borderRadius:"50%",background:color,marginTop:6,flexShrink:0}}/>
+                <span style={{fontSize:13,color:"#4A4040",lineHeight:1.55}}>{ing}</span>
+              </div>
+            ))}</div>
+          )}
+          {tab==="preparación" && (
+            <div>{option.instructions.map((step,i)=>(
+              <div key={i} style={{display:"flex",gap:10,marginBottom:10}}>
+                <span style={{width:22,height:22,borderRadius:"50%",background:color+"22",color,fontSize:11,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>{i+1}</span>
+                <span style={{fontSize:13,color:"#4A4040",lineHeight:1.6}}>{step}</span>
+              </div>
+            ))}</div>
+          )}
+          <div style={{marginTop:14,background:color+"15",borderLeft:`3px solid ${color}`,borderRadius:"0 8px 8px 0",padding:"8px 12px",fontSize:12,color:T.muted,fontStyle:"italic"}}>💡 {option.tip}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MealSection({meal}) {
+  return (
+    <div style={{marginBottom:36}}>
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
+        <span style={{fontSize:24}}>{meal.icon}</span>
+        <div>
+          <div style={{fontFamily:"'Playfair Display',Georgia,serif",fontSize:22,fontWeight:700,color:T.ink,lineHeight:1}}>{meal.label}</div>
+          <div style={{fontSize:12,color:T.muted,marginTop:2}}>{meal.time} · {meal.kcalRange}</div>
+        </div>
+        <span style={{marginLeft:"auto",background:meal.colorSoft,color:meal.color,border:`1px solid ${meal.color}44`,borderRadius:20,padding:"4px 12px",fontSize:11,fontWeight:700}}>6 opciones</span>
+      </div>
+      {meal.options.map((opt,i)=><OptionCard key={i} option={opt} color={meal.color} colorSoft={meal.colorSoft} index={i}/>)}
+    </div>
+  );
+}
+
+function App() {
+  const [mainTab,setMainTab]=useState("plan");
+  const notas=[
+    {icon:"⚖️",title:"El déficit es casi simbólico",body:"Solo necesitas perder 1 kg. Eso son unas 8–10 semanas comiendo bien, sin pasar hambre ni restricciones extremas."},
+    {icon:"🥚",title:"Proteína primero, siempre",body:"En cada comida hay una fuente proteica — huevo, pollo, atún, yogur, salmón. Esto mantiene el músculo y da saciedad real."},
+    {icon:"🍳",title:"Prep mínimo, resultado máximo",body:"Con huevos cocidos, arroz y pollo en nevera, el 80% de las opciones son de 5 minutos o menos."},
+    {icon:"🏃‍♀️",title:"Actividad moderada = no compensar",body:"No hace falta comer extra por el ejercicio diario moderado. El plan ya tiene ese gasto calculado."},
+    {icon:"🍫",title:"Caprichos sin drama",body:"1–2 veces por semana puede comer algo fuera del plan. Con un déficit tan pequeño, una comida libre no rompe nada."},
+    {icon:"💧",title:"Hidratación primero",body:"2–2.5 L de agua al día. Muchas veces lo que parece hambre es sed. El yogur y la fruta ayudan, pero el agua es lo que más influye."},
+    {icon:"📆",title:"Cómo armar un día real",body:"Elige 1 opción de desayuno + 1 de almuerzo + 1 de cena + snack si hay hambre. Varía cada día para no aburrirte."},
+    {icon:"🧊",title:"Batch mínimo para la semana",body:"Cocer 400 g de arroz, 2–3 filetes de pollo y 6 huevos duros el domingo ahorra 30 min diarios. No hace falta meal prep completo."},
+  ];
+  return (
+    <div style={{minHeight:"100vh",background:T.bg,color:T.ink}}>
+      {/* NAVBAR */}
+      <div style={{background:T.ink,padding:"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:36,height:36,borderRadius:9,background:T.rose,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#fff",fontSize:16,flexShrink:0}}>AC</div>
+          <div>
+            <div style={{color:"#fff",fontWeight:800,fontSize:13,lineHeight:1}}>Alejo Castillo</div>
+            <div style={{color:T.light,fontSize:10,letterSpacing:"0.07em",textTransform:"uppercase"}}>Coach · @alejocastillob</div>
+          </div>
+        </div>
+        <div style={{background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:20,padding:"5px 12px",display:"flex",alignItems:"center",gap:8}}>
+          <div style={{width:26,height:26,borderRadius:"50%",background:T.rose,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,flexShrink:0}}>YE</div>
+          <div>
+            <div style={{color:"#fff",fontSize:11,fontWeight:700,lineHeight:1.1}}>Yuliana Echeverri</div>
+            <div style={{color:T.light,fontSize:9}}>Plan personalizado</div>
+          </div>
+        </div>
+      </div>
+
+      {/* HERO */}
+      <div style={{background:T.surface,borderBottom:`1px solid ${T.border}`,padding:"26px 20px 22px"}}>
+        <div style={{display:"inline-block",background:T.roseSoft,color:T.rose,borderRadius:20,padding:"3px 14px",fontSize:11,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10}}>23 años · 1.68 m · Actividad moderada</div>
+        <h1 style={{fontFamily:"'Playfair Display',Georgia,serif",fontSize:32,fontWeight:700,color:T.ink,margin:"0 0 4px",lineHeight:1.15}}>
+          Comer bien,<br/><span style={{color:T.rose,fontStyle:"italic"}}>sin complicarse</span>
+        </h1>
+        <p style={{color:T.muted,fontSize:13,margin:"8px 0 20px",lineHeight:1.6}}>
+          53 kg → <strong style={{color:T.ink}}>52 kg</strong> · Déficit suave y sostenible
+        </p>
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+          {[{label:"Calorías",value:"~1.680 kcal",color:T.rose,note:"déficit de 200 kcal/día"},{label:"Proteína",value:"~106 g",color:T.sage,note:"2 g/kg · prioridad #1"},{label:"Carbs",value:"~185 g",color:T.sand,note:"energía diaria"}].map((m,i)=>(
+            <div key={i} style={{background:T.warm,borderRadius:12,padding:"10px 14px",flex:1,minWidth:90}}>
+              <div style={{fontSize:17,fontWeight:800,color:m.color}}>{m.value}</div>
+              <div style={{fontSize:12,fontWeight:700,color:T.ink}}>{m.label}</div>
+              <div style={{fontSize:10,color:T.muted}}>{m.note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* TABS */}
+      <div style={{padding:"0 20px"}}>
+        <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,marginBottom:24,marginTop:18}}>
+          {[{id:"plan",label:"🍽️ Opciones por comida"},{id:"notas",label:"📌 Reglas simples"}].map(t=>(
+            <button key={t.id} onClick={()=>setMainTab(t.id)} style={{background:"none",border:"none",padding:"10px 16px",fontSize:13,fontWeight:700,color:mainTab===t.id?T.rose:T.muted,cursor:"pointer",borderBottom:mainTab===t.id?`2px solid ${T.rose}`:"2px solid transparent",marginBottom:-2,transition:"color 0.2s"}}>{t.label}</button>
+          ))}
+        </div>
+
+        {mainTab==="plan" && (
+          <div style={{paddingBottom:60}}>
+            <div style={{background:T.sageSoft,border:`1px solid ${T.sage}44`,borderRadius:12,padding:"11px 15px",marginBottom:24,fontSize:13,color:T.sage,fontWeight:600}}>
+              ↓ Toca una opción para ver ingredientes y preparación paso a paso
+            </div>
+            {meals.map(meal=><MealSection key={meal.id} meal={meal}/>)}
+          </div>
+        )}
+
+        {mainTab==="notas" && (
+          <div style={{paddingBottom:60}}>
+            {notas.map((note,i)=>(
+              <div key={i} style={{display:"flex",gap:14,padding:"18px 0",borderBottom:i<notas.length-1?`1px solid ${T.border}`:"none"}}>
+                <span style={{fontSize:22,flexShrink:0}}>{note.icon}</span>
+                <div>
+                  <div style={{fontFamily:"'Playfair Display',Georgia,serif",fontWeight:700,fontSize:15,color:T.ink,marginBottom:4}}>{note.title}</div>
+                  <div style={{fontSize:13,color:T.muted,lineHeight:1.65}}>{note.body}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* FOOTER */}
+      <div style={{background:T.ink,padding:"18px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <div style={{width:28,height:28,borderRadius:7,background:T.rose,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Playfair Display',serif",fontWeight:700,color:"#fff",fontSize:12}}>AC</div>
+          <div>
+            <div style={{color:"#fff",fontWeight:700,fontSize:12}}>Alejo Castillo · Coach</div>
+            <div style={{color:T.light,fontSize:10}}>@alejocastillob · YouTube · TikTok · Instagram</div>
+          </div>
+        </div>
+        <div style={{color:T.muted,fontSize:10}}>Plan personalizado · Yuliana Echeverri</div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
